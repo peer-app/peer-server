@@ -21,6 +21,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final MentorDetailRepository mentorDetailRepository;
 
+    public Long findUserIdByMemberKey(String memberKey) {
+        return userRepository.findByMemberKey(memberKey).orElseThrow(
+                () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+        ).getId();
+    }
+
     /*
     멘토-새로운 멘토 등록
     oauth를 통해 user에는 이미 저장 가정

@@ -4,10 +4,11 @@ import com.example.peer.domain.schedule.dto.request.ScheduleRuleRequest;
 import com.example.peer.domain.schedule.dto.response.PossibleSchedulesResponse;
 import com.example.peer.domain.schedule.dto.response.ScheduleRuleResponse;
 import com.example.peer.domain.schedule.service.ScheduleService;
-import com.example.peer.domain.security.service.TokenService;
-import com.example.peer.domain.security.utils.JwtTokenProvider;
+import com.example.peer.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,19 +17,18 @@ import org.springframework.web.bind.annotation.*;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final TokenService tokenService;
+    private final UserService userService;
 
     /*
     멘토가 일정 규칙을 생성
      */
     @PostMapping("/mentor/create")
     public ResponseEntity<ScheduleRuleResponse> CreateScheduleRule(
-            @RequestHeader("Authorization") String authorization,
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ScheduleRuleRequest scheduleRuleRequest
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.CreateScheduleRule(scheduleRuleRequest, tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
+                .body(scheduleService.CreateScheduleRule(scheduleRuleRequest, userService.findUserIdByMemberKey(userDetails.getUsername())));
     }
 
     /*
@@ -36,11 +36,11 @@ public class ScheduleController {
      */
     @PatchMapping("/mentor/update")
     public ResponseEntity<ScheduleRuleResponse> UpdateScheduleRule(
-            @RequestHeader("Authorization") String authorization,
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ScheduleRuleRequest scheduleRuleRequest
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.UpdateScheduleRule(scheduleRuleRequest, tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
+                .body(scheduleService.UpdateScheduleRule(scheduleRuleRequest, userService.findUserIdByMemberKey(userDetails.getUsername())));
     }
 
     /*
@@ -48,10 +48,10 @@ public class ScheduleController {
      */
     @GetMapping("/mentor/view")
     public ResponseEntity<ScheduleRuleResponse> ViewMyScheduleRule(
-            @RequestHeader("Authorization") String authorization
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.ViewScheduleRule(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
+                .body(scheduleService.ViewScheduleRule(userService.findUserIdByMemberKey(userDetails.getUsername())));
     }
 
     /*
@@ -59,7 +59,7 @@ public class ScheduleController {
      */
     @GetMapping("/mentee/view/{mentorId}")
     public ResponseEntity<PossibleSchedulesResponse> ViewPossibleSchedules(
-            @RequestHeader("Authorization") String authorization,
+            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("mentorId") Long mentorId
     ) {
         return ResponseEntity.ok()

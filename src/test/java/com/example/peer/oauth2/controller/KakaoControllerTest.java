@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.example.peer.domain.security.entity.TokenInfo;
 import com.example.peer.domain.security.service.UserDetailsServiceImpl;
 import com.example.peer.domain.security.utils.JwtTokenProvider;
-import com.example.peer.domain.user.entity.OauthType;
 import com.example.peer.domain.user.entity.Role;
 import com.example.peer.domain.user.entity.User;
 import com.example.peer.domain.user.repository.UserRepository;
