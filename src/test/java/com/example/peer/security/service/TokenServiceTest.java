@@ -3,6 +3,8 @@ package com.example.peer.security.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.peer.domain.security.security.service.TokenService;
+import com.example.peer.domain.security.security.service.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.example.peer.security.entity.TokenInfo;
-import com.example.peer.security.utils.JwtTokenProvider;
-import com.example.peer.user.entity.OauthType;
-import com.example.peer.user.entity.Role;
-import com.example.peer.user.entity.User;
-import com.example.peer.user.repository.UserRepository;
+import com.example.peer.domain.security.security.entity.TokenInfo;
+import com.example.peer.domain.security.security.utils.JwtTokenProvider;
+import com.example.peer.domain.user.user.entity.OauthType;
+import com.example.peer.domain.user.user.entity.Role;
+import com.example.peer.domain.user.user.entity.User;
+import com.example.peer.domain.user.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,9 +29,9 @@ class TokenServiceTest {
 	@Autowired
 	JwtTokenProvider jwtTokenProvider;
 	@Autowired
-	UserDetailsServiceImpl userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
 	@Autowired
-	TokenService tokenService;
+    TokenService tokenService;
 
 	TokenInfo getTokenInfo() {
 		List<GrantedAuthority> authorities = new ArrayList<>();

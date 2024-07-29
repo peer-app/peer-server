@@ -16,13 +16,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.example.peer.security.entity.TokenInfo;
-import com.example.peer.security.service.UserDetailsServiceImpl;
-import com.example.peer.security.utils.JwtTokenProvider;
-import com.example.peer.user.entity.OauthType;
-import com.example.peer.user.entity.Role;
-import com.example.peer.user.entity.User;
-import com.example.peer.user.repository.UserRepository;
+import com.example.peer.domain.security.security.entity.TokenInfo;
+import com.example.peer.domain.security.security.service.UserDetailsServiceImpl;
+import com.example.peer.domain.security.security.utils.JwtTokenProvider;
+import com.example.peer.domain.user.user.entity.OauthType;
+import com.example.peer.domain.user.user.entity.Role;
+import com.example.peer.domain.user.user.entity.User;
+import com.example.peer.domain.user.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,16 +1,17 @@
 package com.example.peer.schedule.service;
 
-import com.example.peer.schedule.dto.request.ScheduleRuleRequest;
-import com.example.peer.schedule.dto.response.PossibleSchedulesResponse;
-import com.example.peer.schedule.entity.ScheduleRule;
-import com.example.peer.schedule.repository.ScheduleRuleRepository;
-import com.example.peer.user.entity.MentorDetail;
-import com.example.peer.user.entity.Role;
-import com.example.peer.user.entity.User;
-import com.example.peer.user.exception.UserErrorCode;
-import com.example.peer.user.exception.UserException;
-import com.example.peer.user.repository.MentorDetailRepository;
-import com.example.peer.user.repository.UserRepository;
+import com.example.peer.domain.schedule.schedule.dto.request.ScheduleRuleRequest;
+import com.example.peer.domain.schedule.schedule.dto.response.PossibleSchedulesResponse;
+import com.example.peer.domain.schedule.schedule.entity.ScheduleRule;
+import com.example.peer.domain.schedule.schedule.repository.ScheduleRuleRepository;
+import com.example.peer.domain.schedule.schedule.service.ScheduleService;
+import com.example.peer.domain.user.user.entity.MentorDetail;
+import com.example.peer.domain.user.user.entity.Role;
+import com.example.peer.domain.user.user.entity.User;
+import com.example.peer.domain.user.user.exception.UserErrorCode;
+import com.example.peer.domain.user.user.exception.UserException;
+import com.example.peer.domain.user.user.repository.MentorDetailRepository;
+import com.example.peer.domain.user.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @Transactional

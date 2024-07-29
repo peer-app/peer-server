@@ -1,18 +1,18 @@
 package com.example.peer.user.service;
 
-import com.example.peer.user.dto.request.MentorDetailRequest;
-import com.example.peer.user.dto.response.MenteeDetailResponse;
-import com.example.peer.user.dto.response.MentorDetailResponse;
-import com.example.peer.user.dto.response.MentorForMenteeResponse;
-import com.example.peer.user.dto.response.MentorSummariesResponse;
-import com.example.peer.user.entity.Keyword;
-import com.example.peer.user.entity.MentorDetail;
-import com.example.peer.user.entity.Role;
-import com.example.peer.user.entity.User;
-import com.example.peer.user.exception.UserErrorCode;
-import com.example.peer.user.exception.UserException;
-import com.example.peer.user.repository.MentorDetailRepository;
-import com.example.peer.user.repository.UserRepository;
+import com.example.peer.domain.user.user.dto.request.MentorDetailRequest;
+import com.example.peer.domain.user.user.dto.response.MenteeDetailResponse;
+import com.example.peer.domain.user.user.dto.response.MentorDetailResponse;
+import com.example.peer.domain.user.user.dto.response.MentorForMenteeResponse;
+import com.example.peer.domain.user.user.dto.response.MentorSummariesResponse;
+import com.example.peer.domain.user.user.entity.Keyword;
+import com.example.peer.domain.user.user.entity.Role;
+import com.example.peer.domain.user.user.entity.User;
+import com.example.peer.domain.user.user.exception.UserErrorCode;
+import com.example.peer.domain.user.user.exception.UserException;
+import com.example.peer.domain.user.user.repository.MentorDetailRepository;
+import com.example.peer.domain.user.user.repository.UserRepository;
+import com.example.peer.domain.user.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
