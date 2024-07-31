@@ -28,7 +28,7 @@ public class UserController {
             @RequestBody MentorDetailRequest mentorDetailRequest
     ) {
         return ResponseEntity.ok()
-                .body(userService.CreateMentorDetail(mentorDetailRequest, userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(userService.CreateMentorDetail(mentorDetailRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -39,7 +39,7 @@ public class UserController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewMentorDetail(userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(userService.ViewMentorDetail(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -51,7 +51,7 @@ public class UserController {
             @RequestBody MentorDetailRequest mentorDetailRequest
     ){
         return ResponseEntity.ok()
-                .body(userService.UpdateMentorDetail(mentorDetailRequest, userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(userService.UpdateMentorDetail(mentorDetailRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -62,7 +62,7 @@ public class UserController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewMenteeDetail(userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(userService.ViewMenteeDetail(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -73,7 +73,7 @@ public class UserController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewAcceptedMentorList(userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(userService.ViewAcceptedMentorList(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*

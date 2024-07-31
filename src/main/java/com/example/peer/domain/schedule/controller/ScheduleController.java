@@ -28,7 +28,7 @@ public class ScheduleController {
             @RequestBody ScheduleRuleRequest scheduleRuleRequest
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.CreateScheduleRule(scheduleRuleRequest, userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(scheduleService.CreateScheduleRule(scheduleRuleRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -40,7 +40,7 @@ public class ScheduleController {
             @RequestBody ScheduleRuleRequest scheduleRuleRequest
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.UpdateScheduleRule(scheduleRuleRequest, userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(scheduleService.UpdateScheduleRule(scheduleRuleRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -51,7 +51,7 @@ public class ScheduleController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.ViewScheduleRule(userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(scheduleService.ViewScheduleRule(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*

@@ -1,11 +1,7 @@
 package com.example.peer.common.config;
 
-import com.example.peer.domain.oauth2.handler.CustomAccessDeniedHandler;
-import com.example.peer.domain.oauth2.handler.CustomAuthenticationEntryPoint;
-import com.example.peer.domain.oauth2.handler.OAuth2FailureHandler;
-import com.example.peer.domain.oauth2.handler.OAuth2SuccessHandler;
-import com.example.peer.domain.oauth2.jwt.TokenAuthenticationFilter;
-import com.example.peer.domain.oauth2.service.CustomOAuth2UserService;
+import com.example.peer.domain.oauth.jwt.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @Configuration
@@ -27,15 +26,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-	private final CustomOAuth2UserService oAuth2UserService;
-	private final OAuth2SuccessHandler oAuth2SuccessHandler;
-	private final TokenAuthenticationFilter tokenAuthenticationFilter;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() { // security를 적용하지 않을 리소스
 		return web -> web.ignoring()
 				// error endpoint를 열어줘야 함, favicon.ico 추가!
-				.requestMatchers("/error", "/favicon.ico");
+				.requestMatchers("/error", "/favicon.ico", "/swagger-ui.html");
 	}
 
 	@Bean
@@ -43,7 +40,6 @@ public class SecurityConfig {
 		http
 				// rest api 설정
 				.csrf(AbstractHttpConfigurer::disable) // csrf 비활성화 -> cookie를 사용하지 않으면 꺼도 된다. (cookie를 사용할 경우 httpOnly(XSS 방어), sameSite(CSRF 방어)로 방어해야 한다.)
-				.cors(AbstractHttpConfigurer::disable) // cors 비활성화 -> 프론트와 연결 시 따로 설정 필요
 				.httpBasic(AbstractHttpConfigurer::disable) // 기본 인증 로그인 비활성화
 				.formLogin(AbstractHttpConfigurer::disable) // 기본 login form 비활성화
 				.logout(AbstractHttpConfigurer::disable) // 기본 logout 비활성화
@@ -56,21 +52,25 @@ public class SecurityConfig {
 				.authorizeHttpRequests(request ->
 						request.requestMatchers(
 										new AntPathRequestMatcher("/"),
-										new AntPathRequestMatcher("/auth/success")).permitAll()
+										new AntPathRequestMatcher("/login"),
+										new AntPathRequestMatcher("/auth/**")).permitAll()
 								.anyRequest().authenticated()
 				)
 
-				// oauth2 설정
-				.oauth2Login(oauth -> // OAuth2 로그인 기능에 대한 여러 설정의 진입점
-						// OAuth2 로그인 성공 이후 사용자 정보를 가져올 때의 설정을 담당
-						oauth.userInfoEndpoint(c -> c.userService(oAuth2UserService))
-								// 로그인 성공 시 핸들러
-								.successHandler(oAuth2SuccessHandler)
-				)
+				.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+					@Override
+					public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+						CorsConfiguration config = new CorsConfiguration();
+						config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+						config.setAllowedMethods(Collections.singletonList("*"));
+						config.setAllowCredentials(true);
+						config.setAllowedHeaders(Collections.singletonList("*"));
+						config.setMaxAge(3600L);
+						return config;
+					}
+				}))
 
-				// jwt 관련 설정
-				.addFilterBefore(tokenAuthenticationFilter,
-						UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

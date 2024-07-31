@@ -29,7 +29,7 @@ public class ConsultingController {
             @RequestBody ConsultingRequest consultingRequest
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.CreateConsulting(consultingRequest, userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(consultingService.CreateConsulting(consultingRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -41,7 +41,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewConsultingDetailMentor(consultingId, userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(consultingService.ViewConsultingDetailMentor(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -53,7 +53,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewConsultingDetailMentee(consultingId, userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(consultingService.ViewConsultingDetailMentee(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -65,7 +65,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.AcceptConsulting(consultingId, userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(consultingService.AcceptConsulting(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -77,7 +77,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.RejectConsulting(consultingId, userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(consultingService.RejectConsulting(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -88,7 +88,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPastConsultingMentor(userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(consultingService.ViewPastConsultingMentor(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -99,7 +99,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPastConsultingMentee(userService.findUserIdByMemberKey(userDetails.getUsername())));
+                .body(consultingService.ViewPastConsultingMentee(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
@@ -110,7 +110,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentor(userService.findUserIdByMemberKey(userDetails.getUsername()), State.ACCEPTED));
+                .body(consultingService.ViewPresentConsultingMentor(userService.getIdBySocailId(userDetails.getUsername()), State.ACCEPTED));
     }
 
     /*
@@ -121,7 +121,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentor(userService.findUserIdByMemberKey(userDetails.getUsername()), State.WAITING));
+                .body(consultingService.ViewPresentConsultingMentor(userService.getIdBySocailId(userDetails.getUsername()), State.WAITING));
     }
 
     /*
@@ -132,7 +132,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentor(userService.findUserIdByMemberKey(userDetails.getUsername()), State.REJECTED));
+                .body(consultingService.ViewPresentConsultingMentor(userService.getIdBySocailId(userDetails.getUsername()), State.REJECTED));
     }
 
     /*
@@ -143,7 +143,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentee(userService.findUserIdByMemberKey(userDetails.getUsername()), State.ACCEPTED));
+                .body(consultingService.ViewPresentConsultingMentee(userService.getIdBySocailId(userDetails.getUsername()), State.ACCEPTED));
     }
 
     /*
@@ -154,7 +154,7 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentee(userService.findUserIdByMemberKey(userDetails.getUsername()), State.WAITING));
+                .body(consultingService.ViewPresentConsultingMentee(userService.getIdBySocailId(userDetails.getUsername()), State.WAITING));
     }
 
     /*
@@ -165,6 +165,6 @@ public class ConsultingController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentee(userService.findUserIdByMemberKey(userDetails.getUsername()), State.REJECTED));
+                .body(consultingService.ViewPresentConsultingMentee(userService.getIdBySocailId(userDetails.getUsername()), State.REJECTED));
     }
 }

@@ -1,4 +1,4 @@
-package com.example.peer.domain.oauth2.exception;
+package com.example.peer.domain.oauth.exception;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -21,8 +21,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final MentorDetailRepository mentorDetailRepository;
 
-    public Long findUserIdByMemberKey(String memberKey) {
-        return userRepository.findByMemberKey(memberKey).orElseThrow(
+    public Long getIdBySocailId(String socialId) {
+        return userRepository.findBySocialId(socialId).orElseThrow(
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         ).getId();
     }

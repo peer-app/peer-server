@@ -29,20 +29,20 @@ public class User extends BaseTimeEntity {
 
 	private String profileImageUrl;
 
-	private String memberKey;
+	private String socialId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mentor_detail_id")
 	private MentorDetail mentorDetail;
 
 	@Builder
-	public User(String name, String email, Role role, String phoneNumber, String profileImageUrl, String memberKey) {
+	public User(String name, String email, Role role, String phoneNumber, String profileImageUrl, String socialId) {
 		this.name = name;
 		this.email = email;
 		this.role = role;
 		this.phoneNumber = phoneNumber;
 		this.profileImageUrl = profileImageUrl;
-		this.memberKey = memberKey;
+		this.socialId = socialId;
 	}
 
 	public void UpdateMentorDetail(MentorDetail mentorDetail) {
@@ -55,6 +55,10 @@ public class User extends BaseTimeEntity {
 
 	public void UpdateRole(Role role) {
 		this.role = role;
+	}
+
+	public void UpdateSocialId(String socialId) {
+		this.socialId = socialId;
 	}
 
 	public void UpdateProfileImageUrl(String profileImageUrl) {
