@@ -24,147 +24,147 @@ public class ConsultingController {
     멘티가 새로운 상담을 신청
      */
     @PostMapping("/mentee/create")
-    public ResponseEntity<ConsultingDetailResponse> CreateConsulting(
+    public ResponseEntity<ConsultingDetailResponse> createConsulting(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ConsultingRequest consultingRequest
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.CreateConsulting(consultingRequest, userService.getIdBySocailId(userDetails.getUsername())));
+                .body(consultingService.createConsulting(consultingRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘토가 상담 상세를 조회
      */
     @GetMapping("/mentor/{consultingId}")
-    public ResponseEntity<ConsultingDetailResponse> ViewConsultingDetailMentor(
+    public ResponseEntity<ConsultingDetailResponse> viewConsultingDetailMentor(
             @PathVariable("consultingId") Long consultingId,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewConsultingDetailMentor(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
+                .body(consultingService.viewConsultingDetailMentor(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘티가 상담 상세를 조회
      */
     @GetMapping("/mentee/{consultingId}")
-    public ResponseEntity<ConsultingDetailResponse> ViewConsultingDetailMentee(
+    public ResponseEntity<ConsultingDetailResponse> viewConsultingDetailMentee(
             @PathVariable("consultingId") Long consultingId,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewConsultingDetailMentee(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
+                .body(consultingService.viewConsultingDetailMentee(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘토가 세로운 상담을 수락
      */
     @GetMapping("/mentor/{consultingId}/accept")
-    public ResponseEntity<ConsultingDetailResponse> AcceptConsulting(
+    public ResponseEntity<ConsultingDetailResponse> acceptConsulting(
             @PathVariable("consultingId") Long consultingId,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.AcceptConsulting(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
+                .body(consultingService.acceptConsulting(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘토가 세로운 상담을 거절
      */
     @GetMapping("/mentor/{consultingId}/reject")
-    public ResponseEntity<ConsultingDetailResponse> RejectConsulting(
+    public ResponseEntity<ConsultingDetailResponse> rejectConsulting(
             @PathVariable("consultingId") Long consultingId,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.RejectConsulting(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
+                .body(consultingService.rejectConsulting(consultingId, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘토가 자신의 과거 상담 리스트 조회
      */
     @GetMapping("/mentor/past")
-    public ResponseEntity<ConsultingSummariesResponse> ViewPastConsultingMentor(
+    public ResponseEntity<ConsultingSummariesResponse> viewPastConsultingMentor(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPastConsultingMentor(userService.getIdBySocailId(userDetails.getUsername())));
+                .body(consultingService.viewPastConsultingMentor(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘티가 자신의 과거 상담 리스트 조회
      */
     @GetMapping("/mentee/past")
-    public ResponseEntity<ConsultingSummariesResponse> ViewPastConsultingMentee(
+    public ResponseEntity<ConsultingSummariesResponse> viewPastConsultingMentee(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPastConsultingMentee(userService.getIdBySocailId(userDetails.getUsername())));
+                .body(consultingService.viewPastConsultingMentee(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘토가 자신의 수락된 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentor/accepted")
-    public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentor(
+    public ResponseEntity<ConsultingSummariesResponse> viewPresentAcceptedConsultingMentor(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentor(userService.getIdBySocailId(userDetails.getUsername()), State.ACCEPTED));
+                .body(consultingService.viewPresentConsultingMentor(userService.getIdBySocailId(userDetails.getUsername()), State.ACCEPTED));
     }
 
     /*
     멘토가 자신의 대기중 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentor/waiting")
-    public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentor(
+    public ResponseEntity<ConsultingSummariesResponse> viewPresentWaitingConsultingMentor(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentor(userService.getIdBySocailId(userDetails.getUsername()), State.WAITING));
+                .body(consultingService.viewPresentConsultingMentor(userService.getIdBySocailId(userDetails.getUsername()), State.WAITING));
     }
 
     /*
     멘토가 자신의 거절된 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentor/rejected")
-    public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentor(
+    public ResponseEntity<ConsultingSummariesResponse> viewPresentRejectedConsultingMentor(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentor(userService.getIdBySocailId(userDetails.getUsername()), State.REJECTED));
+                .body(consultingService.viewPresentConsultingMentor(userService.getIdBySocailId(userDetails.getUsername()), State.REJECTED));
     }
 
     /*
     멘티가 자신의 수락된 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentee/accepted")
-    public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentee(
+    public ResponseEntity<ConsultingSummariesResponse> viewPresentAcceptedConsultingMentee(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentee(userService.getIdBySocailId(userDetails.getUsername()), State.ACCEPTED));
+                .body(consultingService.viewPresentConsultingMentee(userService.getIdBySocailId(userDetails.getUsername()), State.ACCEPTED));
     }
 
     /*
     멘티가 자신의 대기중 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentee/waiting")
-    public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentee(
+    public ResponseEntity<ConsultingSummariesResponse> viewPresentWaitingConsultingMentee(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentee(userService.getIdBySocailId(userDetails.getUsername()), State.WAITING));
+                .body(consultingService.viewPresentConsultingMentee(userService.getIdBySocailId(userDetails.getUsername()), State.WAITING));
     }
 
     /*
     멘티가 자신의 거절된 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentee/rejected")
-    public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentee(
+    public ResponseEntity<ConsultingSummariesResponse> viewPresentRejectedConsultingMentee(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentee(userService.getIdBySocailId(userDetails.getUsername()), State.REJECTED));
+                .body(consultingService.viewPresentConsultingMentee(userService.getIdBySocailId(userDetails.getUsername()), State.REJECTED));
     }
 }

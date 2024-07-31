@@ -39,11 +39,11 @@ public class ConsultingService {
     맨티-새로운 상담을 신청
      */
     @Transactional
-    public ConsultingDetailResponse CreateConsulting(ConsultingRequest consultingRequest, Long menteeId) {
+    public ConsultingDetailResponse createConsulting(ConsultingRequest consultingRequest, Long menteeId) {
         //멘티 전화번호 업데이트
         userRepository.findById(menteeId).orElseThrow(
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
-        ).UpdatePhoneNumber(consultingRequest.getPhoneNumber());
+        ).updatePhoneNumber(consultingRequest.getPhoneNumber());
 
         //상담시간이 유효한지 체크
         if(!checkValidationConsultingDateTime(consultingRequest.getConsultingDateTime(), consultingRequest.getMentorId())) {
@@ -88,7 +88,7 @@ public class ConsultingService {
         ).getMentorDetail()).orElseThrow(
                 () -> new UserException(UserErrorCode.MENTOR_DETAIL_NOT_FOUND)
         );
-        if (DaytoScheduleRule(consultingDateTime.getDayOfWeek().getValue(), findScheduleRule).contains(consultingDateTime.toLocalTime())
+        if (daytoScheduleRule(consultingDateTime.getDayOfWeek().getValue(), findScheduleRule).contains(consultingDateTime.toLocalTime())
                 &&consultingDateTime.isAfter(LocalDateTime.now())
                 &&consultingDateTime.isBefore(LocalDateTime.now().plusDays(16))
                 &&consultingRepository.findByConsultingDateTimeAndMentorIdAndState(consultingDateTime, mentorId, State.ACCEPTED).isEmpty()) {
@@ -100,7 +100,7 @@ public class ConsultingService {
     /*
     요일을 통해 필요한 일정 규칙을 반환
      */
-    private List<LocalTime> DaytoScheduleRule(int dayOfWeek, ScheduleRule scheduleRule) {
+    private List<LocalTime> daytoScheduleRule(int dayOfWeek, ScheduleRule scheduleRule) {
         if(dayOfWeek == 1) {
             return scheduleRule.getMondayScheduleRule();
         } else if (dayOfWeek == 2) {
@@ -121,7 +121,7 @@ public class ConsultingService {
     /*
     멘토-상담 세부 내역 조회 로직
      */
-    public ConsultingDetailResponse ViewConsultingDetailMentor(Long consultingId, Long mentorId) {
+    public ConsultingDetailResponse viewConsultingDetailMentor(Long consultingId, Long mentorId) {
         Consulting consulting = consultingRepository.findById(consultingId).orElseThrow(
                 () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
         );
@@ -140,7 +140,7 @@ public class ConsultingService {
     /*
     멘티-상담 세부 내역 조회 로직
      */
-    public ConsultingDetailResponse ViewConsultingDetailMentee(Long consultingId, Long menteeId) {
+    public ConsultingDetailResponse viewConsultingDetailMentee(Long consultingId, Long menteeId) {
         Consulting consulting = consultingRepository.findById(consultingId).orElseThrow(
                 () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
         );
@@ -161,7 +161,7 @@ public class ConsultingService {
     상담 상세 정보들을 리턴
      */
     @Transactional
-    public ConsultingDetailResponse AcceptConsulting(Long consultingId, Long mentorId) {
+    public ConsultingDetailResponse acceptConsulting(Long consultingId, Long mentorId) {
         Consulting consulting = consultingRepository.findById(consultingId).orElseThrow(
                 () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
         );
@@ -173,7 +173,7 @@ public class ConsultingService {
                 || consulting.getConsultingDateTime().isAfter(LocalDateTime.now().plusDays(16))) {
             throw new ConsultingException(ConsultingErrorCode.CANNOT_CONSULT_DURING_THIS_SCHEDULE);
         }
-        consulting.UpdateState(State.ACCEPTED);
+        consulting.updateState(State.ACCEPTED);
         return ConsultingDetailResponse.builder()
                 .consulting(consulting)
                 .consultingDetail(consulting.getConsultingDetail())
@@ -188,14 +188,14 @@ public class ConsultingService {
     상담 상세 정보들을 리턴
      */
     @Transactional
-    public ConsultingDetailResponse RejectConsulting(Long consultingId, Long mentorId) {
+    public ConsultingDetailResponse rejectConsulting(Long consultingId, Long mentorId) {
         Consulting consulting = consultingRepository.findById(consultingId).orElseThrow(
                 () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
         );
         if(!consulting.getMentor().getId().equals(mentorId)) {
             throw new ConsultingException(ConsultingErrorCode.CANNOT_ACCESS_CONSULTING);
         }
-        consulting.UpdateState(State.REJECTED);
+        consulting.updateState(State.REJECTED);
         return ConsultingDetailResponse.builder()
                 .consulting(consulting)
                 .consultingDetail(consulting.getConsultingDetail())
@@ -208,10 +208,10 @@ public class ConsultingService {
     /*
     멘토-자신의 지난 상담 내역을 조회
      */
-    public ConsultingSummariesResponse ViewPastConsultingMentor(Long mentorId) {
+    public ConsultingSummariesResponse viewPastConsultingMentor(Long mentorId) {
         ConsultingSummariesResponse consultingSummariesResponse = ConsultingSummariesResponse.builder().build();
         for(Consulting consulting : consultingRepository.findPastConsultingsByMentorId(mentorId)) {
-            consultingSummariesResponse.UpdateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
+            consultingSummariesResponse.updateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
                     .mentorDetail(consulting.getMentor().getMentorDetail())
                     .mentee(consulting.getMentee())
                     .build());
@@ -222,10 +222,10 @@ public class ConsultingService {
     /*
     멘티-자신의 지난 상담 내역을 조회
      */
-    public ConsultingSummariesResponse ViewPastConsultingMentee(Long menteeId) {
+    public ConsultingSummariesResponse viewPastConsultingMentee(Long menteeId) {
         ConsultingSummariesResponse consultingSummariesResponse = ConsultingSummariesResponse.builder().build();
         for(Consulting consulting : consultingRepository.findPastConsultingsByMenteeId(menteeId)) {
-            consultingSummariesResponse.UpdateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
+            consultingSummariesResponse.updateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
                     .mentorDetail(consulting.getMentor().getMentorDetail())
                     .mentee(consulting.getMentee())
                     .build());
@@ -236,10 +236,10 @@ public class ConsultingService {
     /*
     멘토-자신의 진행 전인 상담 내역을 상태에 따라 조회
      */
-    public ConsultingSummariesResponse ViewPresentConsultingMentor(Long mentorId, State state) {
+    public ConsultingSummariesResponse viewPresentConsultingMentor(Long mentorId, State state) {
         ConsultingSummariesResponse consultingSummariesResponse = ConsultingSummariesResponse.builder().build();
         for(Consulting consulting : consultingRepository.findPresentConsultingsByMentorIdAndState(mentorId, state)) {
-            consultingSummariesResponse.UpdateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
+            consultingSummariesResponse.updateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
                     .mentorDetail(consulting.getMentor().getMentorDetail())
                     .mentee(consulting.getMentee())
                     .build());
@@ -250,10 +250,10 @@ public class ConsultingService {
     /*
     멘티-자신의 진행 전인 상담 내역을 상태에 따라 조회
      */
-    public ConsultingSummariesResponse ViewPresentConsultingMentee(Long menteeId, State state) {
+    public ConsultingSummariesResponse viewPresentConsultingMentee(Long menteeId, State state) {
         ConsultingSummariesResponse consultingSummariesResponse = ConsultingSummariesResponse.builder().build();
         for(Consulting consulting : consultingRepository.findPresentConsultingsByMenteeIdAndState(menteeId, state)) {
-            consultingSummariesResponse.UpdateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
+            consultingSummariesResponse.updateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
                     .mentorDetail(consulting.getMentor().getMentorDetail())
                     .mentee(consulting.getMentee())
                     .build());

@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             } else {
                 // 토큰이 만료된 경우 리프레시 토큰을 확인하여 새로운 액세스 토큰을 발급
-                String refreshToken = request.getHeader("Refresh-Token");
+                String refreshToken = request.getHeader("x-refresh-token");
                 if (refreshToken != null && jwtUtil.validateToken(refreshToken)) {
                     RefreshToken storedRefreshToken = refreshTokenRepository.findById(username).orElse(null);
                     if (storedRefreshToken != null && storedRefreshToken.getToken().equals(refreshToken)) {

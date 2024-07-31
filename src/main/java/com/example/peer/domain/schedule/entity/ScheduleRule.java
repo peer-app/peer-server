@@ -65,10 +65,10 @@ public class ScheduleRule {
         this.sundayScheduleRule = sundayScheduleRule;
         this.mentorDetail = mentorDetail;
         //==연관관계 메서드==//
-        mentorDetail.UpdateScheduleRule(this);
+        mentorDetail.updateScheduleRule(this);
     }
 
-    public ScheduleRule UpdateScheduleRule(ScheduleRuleRequest scheduleRuleRequest) {
+    public ScheduleRule updateScheduleRule(ScheduleRuleRequest scheduleRuleRequest) {
         this.mondayScheduleRule.clear();
         this.mondayScheduleRule.addAll(scheduleRuleRequest.getMondayScheduleRule());
 

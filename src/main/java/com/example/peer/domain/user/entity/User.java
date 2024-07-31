@@ -45,23 +45,23 @@ public class User extends BaseTimeEntity {
 		this.socialId = socialId;
 	}
 
-	public void UpdateMentorDetail(MentorDetail mentorDetail) {
+	public void updateMentorDetail(MentorDetail mentorDetail) {
 		this.mentorDetail = mentorDetail;
 	}
 
-	public void UpdatePhoneNumber(String phoneNumber) {
+	public void updatePhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public void UpdateRole(Role role) {
+	public void updateRole(Role role) {
 		this.role = role;
 	}
 
-	public void UpdateSocialId(String socialId) {
+	public void updateSocialId(String socialId) {
 		this.socialId = socialId;
 	}
 
-	public void UpdateProfileImageUrl(String profileImageUrl) {
+	public void updateProfileImageUrl(String profileImageUrl) {
 		this.profileImageUrl = profileImageUrl;
 	}
 }

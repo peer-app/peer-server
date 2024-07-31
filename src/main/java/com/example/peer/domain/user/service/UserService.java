@@ -27,12 +27,29 @@ public class UserService {
         ).getId();
     }
 
+    @Transactional
+    public void signUpMentor(String phoneNumber, String socialId) {
+        User user = userRepository.findBySocialId(socialId).orElseThrow(
+                () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+        );
+        user.updatePhoneNumber(phoneNumber);
+    }
+
+    @Transactional
+    public void signUpMentee(String phoneNumber, String socialId) {
+        User user = userRepository.findBySocialId(socialId).orElseThrow(
+                () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+        );
+        user.updateRole(Role.MENTEE);
+        user.updatePhoneNumber(phoneNumber);
+    }
+
     /*
     멘토-새로운 멘토 등록
     oauth를 통해 user에는 이미 저장 가정
      */
     @Transactional
-    public MentorDetailResponse CreateMentorDetail(MentorDetailRequest mentorDetailRequest, Long mentorId) {
+    public MentorDetailResponse createMentorDetail(MentorDetailRequest mentorDetailRequest, Long mentorId) {
         MentorDetail mentorDetail = mentorDetailRepository.save(MentorDetail.builder()
                 .nickname(mentorDetailRequest.getNickname())
                 .position(mentorDetailRequest.getPosition())
@@ -43,9 +60,9 @@ public class UserService {
         User mentor = userRepository.findById(mentorId).orElseThrow(
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );
-        mentor.UpdateRole(Role.MENTOR);
-        mentor.UpdatePhoneNumber(mentorDetailRequest.getPhoneNumber());
-        mentor.UpdateMentorDetail(mentorDetail);
+        mentor.updateRole(Role.MENTOR);
+        mentor.updatePhoneNumber(mentorDetailRequest.getPhoneNumber());
+        mentor.updateMentorDetail(mentorDetail);
         return MentorDetailResponse.builder()
                 .mentorDetail(mentorDetail)
                 .mentor(mentor)
@@ -59,7 +76,7 @@ public class UserService {
     /*
     멘토-멘토 상세 조회
      */
-    public MentorDetailResponse ViewMentorDetail(Long mentorId) {
+    public MentorDetailResponse viewMentorDetail(Long mentorId) {
         User mentor = userRepository.findById(mentorId).orElseThrow(
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );
@@ -73,12 +90,12 @@ public class UserService {
     멘토-멘토 상세 수정
      */
     @Transactional
-    public MentorDetailResponse UpdateMentorDetail(MentorDetailRequest mentorDetailRequest, Long mentorId) {
+    public MentorDetailResponse updateMentorDetail(MentorDetailRequest mentorDetailRequest, Long mentorId) {
         User mentor = userRepository.findById(mentorId).orElseThrow(
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );
-        mentor.UpdatePhoneNumber(mentorDetailRequest.getPhoneNumber());
-        mentor.getMentorDetail().UpdateMentorDetail(mentorDetailRequest.getNickname(), mentorDetailRequest.getPosition(), mentorDetailRequest.getIntroduction(),
+        mentor.updatePhoneNumber(mentorDetailRequest.getPhoneNumber());
+        mentor.getMentorDetail().updateMentorDetail(mentorDetailRequest.getNickname(), mentorDetailRequest.getPosition(), mentorDetailRequest.getIntroduction(),
                 mentorDetailRequest.getOpenTalkLink(), mentorDetailRequest.getKeywords());
         return MentorDetailResponse.builder()
                 .mentorDetail(mentor.getMentorDetail())
@@ -89,7 +106,7 @@ public class UserService {
     /*
     멘티-멘티 상세 조회
      */
-    public MenteeDetailResponse ViewMenteeDetail(Long menteeId) {
+    public MenteeDetailResponse viewMenteeDetail(Long menteeId) {
         return MenteeDetailResponse.builder()
                 .mentee(userRepository.findById(menteeId).orElseThrow(
                         () -> new UserException(UserErrorCode.USER_NOT_FOUND)
@@ -100,7 +117,7 @@ public class UserService {
     /*
     멘티-승인된 멘토 리스트 조회
     */
-    public MentorSummariesResponse ViewAcceptedMentorList(Long menteeId) {
+    public MentorSummariesResponse viewAcceptedMentorList(Long menteeId) {
         MentorSummariesResponse mentorSummariesResponse = MentorSummariesResponse.builder().build();
         for (User mentor : userRepository.findMentorByIsAccepted()) {
             mentorSummariesResponse.UpdateMentorSummary(MentorSummary.builder()
@@ -114,7 +131,7 @@ public class UserService {
     /*
     멘티-멘토 상세 조회
      */
-    public MentorForMenteeResponse ViewMentorByMentee(Long mentorId) {
+    public MentorForMenteeResponse viewMentorByMentee(Long mentorId) {
         User mentor = userRepository.findById(mentorId).orElseThrow(
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );

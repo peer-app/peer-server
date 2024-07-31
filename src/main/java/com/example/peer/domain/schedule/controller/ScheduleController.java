@@ -23,46 +23,46 @@ public class ScheduleController {
     멘토가 일정 규칙을 생성
      */
     @PostMapping("/mentor/create")
-    public ResponseEntity<ScheduleRuleResponse> CreateScheduleRule(
+    public ResponseEntity<ScheduleRuleResponse> createScheduleRule(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ScheduleRuleRequest scheduleRuleRequest
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.CreateScheduleRule(scheduleRuleRequest, userService.getIdBySocailId(userDetails.getUsername())));
+                .body(scheduleService.createScheduleRule(scheduleRuleRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘토가 일정 규칙을 수정
      */
     @PatchMapping("/mentor/update")
-    public ResponseEntity<ScheduleRuleResponse> UpdateScheduleRule(
+    public ResponseEntity<ScheduleRuleResponse> updateScheduleRule(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ScheduleRuleRequest scheduleRuleRequest
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.UpdateScheduleRule(scheduleRuleRequest, userService.getIdBySocailId(userDetails.getUsername())));
+                .body(scheduleService.updateScheduleRule(scheduleRuleRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘토가 자신의 일정 규칙을 조회
      */
     @GetMapping("/mentor/view")
-    public ResponseEntity<ScheduleRuleResponse> ViewMyScheduleRule(
+    public ResponseEntity<ScheduleRuleResponse> viewMyScheduleRule(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.ViewScheduleRule(userService.getIdBySocailId(userDetails.getUsername())));
+                .body(scheduleService.viewScheduleRule(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘티가 멘토의 상담 가능 일정을 조회
      */
     @GetMapping("/mentee/view/{mentorId}")
-    public ResponseEntity<PossibleSchedulesResponse> ViewPossibleSchedules(
+    public ResponseEntity<PossibleSchedulesResponse> viewPossibleSchedules(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("mentorId") Long mentorId
     ) {
         return ResponseEntity.ok()
-                .body(scheduleService.ViewPossibleSchedules(mentorId));
+                .body(scheduleService.viewPossibleSchedules(mentorId));
     }
 }

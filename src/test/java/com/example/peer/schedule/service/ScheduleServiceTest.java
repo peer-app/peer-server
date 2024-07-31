@@ -54,7 +54,7 @@ public class ScheduleServiceTest {
                 .position("backend")
                 .build();
         mentorDetailRepository.save(mentorDetail);
-        mentor.UpdateMentorDetail(mentorDetail);
+        mentor.updateMentorDetail(mentorDetail);
 
         List<LocalTime> scheduleRule = new ArrayList<>(24);
         for (int i=0;i<24;i++) {
@@ -71,7 +71,7 @@ public class ScheduleServiceTest {
                 .build();
 
         //when
-        scheduleService.CreateScheduleRule(scheduleRuleRequest, mentor.getId());
+        scheduleService.createScheduleRule(scheduleRuleRequest, mentor.getId());
 
         //then
         User findUser = userRepository.findById(mentor.getId()).orElseThrow(
@@ -105,7 +105,7 @@ public class ScheduleServiceTest {
                 .position("backend")
                 .build();
         mentorDetailRepository.save(mentorDetail);
-        mentor.UpdateMentorDetail(mentorDetail);
+        mentor.updateMentorDetail(mentorDetail);
 
         List<LocalTime> scheduleRule = new ArrayList<>(24);
         for (int i=0;i<24;i++) {
@@ -121,7 +121,7 @@ public class ScheduleServiceTest {
                 .sundayScheduleRule(scheduleRule)
                 .build();
 
-        scheduleService.CreateScheduleRule(scheduleRuleRequest, mentor.getId());
+        scheduleService.createScheduleRule(scheduleRuleRequest, mentor.getId());
 
         List<LocalTime> updateScheduleRule = new ArrayList<>(24);
         for (int i=0;i<12;i++) {
@@ -138,7 +138,7 @@ public class ScheduleServiceTest {
                 .build();
 
         //when
-        scheduleService.UpdateScheduleRule(updateScheduleRuleRequest, mentor.getId());
+        scheduleService.updateScheduleRule(updateScheduleRuleRequest, mentor.getId());
 
         //then
         User findUser = userRepository.findById(mentor.getId()).orElseThrow(
@@ -174,7 +174,7 @@ public class ScheduleServiceTest {
                 .position("backend")
                 .build();
         mentorDetailRepository.save(mentorDetail);
-        mentor.UpdateMentorDetail(mentorDetail);
+        mentor.updateMentorDetail(mentorDetail);
 
         List<LocalTime> scheduleRule = new ArrayList<>(24);
         for (int i=0;i<12;i++) {
@@ -190,10 +190,10 @@ public class ScheduleServiceTest {
                 .sundayScheduleRule(scheduleRule)
                 .build();
 
-        scheduleService.CreateScheduleRule(scheduleRuleRequest, mentor.getId());
+        scheduleService.createScheduleRule(scheduleRuleRequest, mentor.getId());
 
         //when
-        PossibleSchedulesResponse possibleSchedulesResponse = scheduleService.ViewPossibleSchedules(mentor.getId());
+        PossibleSchedulesResponse possibleSchedulesResponse = scheduleService.viewPossibleSchedules(mentor.getId());
 
         //then
         org.assertj.core.api.Assertions.assertThat(possibleSchedulesResponse.getPossibleSchedules()).doesNotContain(LocalDateTime.now().toLocalDate().atTime(LocalTime.of(0,0,0)));

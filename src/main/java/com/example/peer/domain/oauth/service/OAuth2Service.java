@@ -76,7 +76,7 @@ public class OAuth2Service {
                 String nickname = (String) ((Map<String, Object>) userData.get("profile")).get("nickname");
                 String profileImageUrl = (String) ((Map<String, Object>) userData.get("profile")).get("profile_image_url");
 
-                userRepository.save(userRepository.findBySocialId(id)
+                User user = userRepository.save(userRepository.findBySocialId(id)
                         .orElse(User.builder()
                                 .socialId(id)
                                 .role(Role.GUEST)
@@ -93,7 +93,7 @@ public class OAuth2Service {
                                 .token(refreshToken)
                         .build());
 
-                return Map.of("accessToken", jwtToken, "refreshToken", refreshToken);
+                return Map.of("accessToken", jwtToken, "refreshToken", refreshToken, "role", user.getRole().toString().toLowerCase());
             } else {
                 throw new AuthException(AuthErrorCode.INVALID_OAUTH_TOKEN);
             }

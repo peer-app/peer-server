@@ -12,9 +12,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -23,68 +24,86 @@ public class UserController {
     새로운 멘토 등록
      */
     @PostMapping("/mentor/create")
-    public ResponseEntity<MentorDetailResponse> CreateMentorDetail(
+    public ResponseEntity<MentorDetailResponse> createMentorDetail(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody MentorDetailRequest mentorDetailRequest
     ) {
         return ResponseEntity.ok()
-                .body(userService.CreateMentorDetail(mentorDetailRequest, userService.getIdBySocailId(userDetails.getUsername())));
+                .body(userService.createMentorDetail(mentorDetailRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘토 상세 조회
      */
     @GetMapping("/mentor/view")
-    public ResponseEntity<MentorDetailResponse> ViewMentorDetail(
+    public ResponseEntity<MentorDetailResponse> viewMentorDetail(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewMentorDetail(userService.getIdBySocailId(userDetails.getUsername())));
+                .body(userService.viewMentorDetail(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘토 상세 정보 수정
      */
     @PatchMapping("/mentor/update")
-    public ResponseEntity<MentorDetailResponse> UpdateMentorDetail(
+    public ResponseEntity<MentorDetailResponse> updateMentorDetail(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody MentorDetailRequest mentorDetailRequest
     ){
         return ResponseEntity.ok()
-                .body(userService.UpdateMentorDetail(mentorDetailRequest, userService.getIdBySocailId(userDetails.getUsername())));
+                .body(userService.updateMentorDetail(mentorDetailRequest, userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘티 상세 조회
      */
     @GetMapping("/mentee/view")
-    public ResponseEntity<MenteeDetailResponse> ViewMenteeDetail(
+    public ResponseEntity<MenteeDetailResponse> viewMenteeDetail(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewMenteeDetail(userService.getIdBySocailId(userDetails.getUsername())));
+                .body(userService.viewMenteeDetail(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘티가 승인받은 멘토의 리스트 조회
     */
     @GetMapping("/mentee/mentorlist")
-    public ResponseEntity<MentorSummariesResponse> ViewAcceptedMentorList(
+    public ResponseEntity<MentorSummariesResponse> viewAcceptedMentorList(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewAcceptedMentorList(userService.getIdBySocailId(userDetails.getUsername())));
+                .body(userService.viewAcceptedMentorList(userService.getIdBySocailId(userDetails.getUsername())));
     }
 
     /*
     멘티가 멘토의 정보 조회
      */
     @GetMapping("/mentee/{mentorId}")
-    public ResponseEntity<MentorForMenteeResponse> ViewMentorByMentee(
+    public ResponseEntity<MentorForMenteeResponse> viewMentorByMentee(
             @PathVariable("mentorId") Long mentorId,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewMentorByMentee(mentorId));
+                .body(userService.viewMentorByMentee(mentorId));
+    }
+
+    @PostMapping("/api/mentor/signup")
+    public ResponseEntity<Void> signUpMentor(
+            @RequestBody Map<String, Object> payload,
+            @AuthenticationPrincipal UserDetails userDetails
+    ){
+        userService.signUpMentor((String) payload.get("phoneNumber"), userDetails.getUsername());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/api/mentee/signup")
+    public ResponseEntity<Void> signUpMentee(
+            @RequestBody Map<String, Object> payload,
+            @AuthenticationPrincipal UserDetails userDetails
+    ){
+        userService.signUpMentee((String) payload.get("phoneNumber"), userDetails.getUsername());
+        return ResponseEntity.noContent().build();
     }
 }

@@ -32,7 +32,7 @@ public class ScheduleService {
     멘토-요일별 일정 규칙 생성 로직
      */
     @Transactional
-    public ScheduleRuleResponse CreateScheduleRule(ScheduleRuleRequest scheduleRuleRequest, Long mentorId) {
+    public ScheduleRuleResponse createScheduleRule(ScheduleRuleRequest scheduleRuleRequest, Long mentorId) {
         return ScheduleRuleResponse.builder()
                 .scheduleRule(scheduleRuleRepository.save(ScheduleRule.builder()
                                 .mondayScheduleRule(scheduleRuleRequest.getMondayScheduleRule())
@@ -55,7 +55,7 @@ public class ScheduleService {
     멘토-요일별 일정 규칙 수정 로직
      */
     @Transactional
-    public ScheduleRuleResponse UpdateScheduleRule(ScheduleRuleRequest scheduleRuleRequest, Long mentorId) {
+    public ScheduleRuleResponse updateScheduleRule(ScheduleRuleRequest scheduleRuleRequest, Long mentorId) {
         return ScheduleRuleResponse.builder()
                 .scheduleRule(scheduleRuleRepository.findByMentorDetail(userRepository.findById(mentorId)
                                 .orElseThrow(
@@ -63,14 +63,14 @@ public class ScheduleService {
                                 ).getMentorDetail())
                         .orElseThrow(
                                 () -> new UserException(UserErrorCode.MENTOR_DETAIL_NOT_FOUND)
-                        ).UpdateScheduleRule(scheduleRuleRequest))
+                        ).updateScheduleRule(scheduleRuleRequest))
                 .build();
     }
 
     /*
     멘토-자신의 일정 규칙을 조회
      */
-    public ScheduleRuleResponse ViewScheduleRule(Long mentorId) {
+    public ScheduleRuleResponse viewScheduleRule(Long mentorId) {
         return ScheduleRuleResponse.builder()
                 .scheduleRule(scheduleRuleRepository.findByMentorDetail(userRepository.findById(mentorId)
                                 .orElseThrow(
@@ -86,7 +86,7 @@ public class ScheduleService {
     멘티-일정 규칙을 참고해 멘토의 새로운 상담 가능 일정 조회
         다음날부터 2주치의 상담 가능 일정 조회
      */
-    public PossibleSchedulesResponse ViewPossibleSchedules(Long mentorId) {
+    public PossibleSchedulesResponse viewPossibleSchedules(Long mentorId) {
         List<LocalDateTime> possibleSchedules = new ArrayList<>();
         ScheduleRule scheduleRule = scheduleRuleRepository.findByMentorDetail(userRepository.findById(mentorId)
                 .orElseThrow(
@@ -100,7 +100,7 @@ public class ScheduleService {
 
         for(int i=1 ; i<15; i++){
             LocalDate consultingDate = LocalDate.now().plusDays(i);
-            for(LocalTime localTime : DaytoScheduleRule(consultingDate.getDayOfWeek().getValue(), scheduleRule)) {
+            for(LocalTime localTime : daytoScheduleRule(consultingDate.getDayOfWeek().getValue(), scheduleRule)) {
                 if(consultingDateTimeByIsAccepted.contains(consultingDate.atTime(localTime))) {
                     continue;
                 }
@@ -115,7 +115,7 @@ public class ScheduleService {
     /*
     요일을 통해 필요한 일정 규칙을 반환
      */
-    private List<LocalTime> DaytoScheduleRule(int dayOfWeek, ScheduleRule scheduleRule) {
+    private List<LocalTime> daytoScheduleRule(int dayOfWeek, ScheduleRule scheduleRule) {
         if(dayOfWeek == 1) {
             return scheduleRule.getMondayScheduleRule();
         } else if (dayOfWeek == 2) {

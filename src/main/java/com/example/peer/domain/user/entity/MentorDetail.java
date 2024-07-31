@@ -49,15 +49,15 @@ public class MentorDetail {
 		this.isAccepted = Boolean.TRUE;
 	}
 
-	public void UpdateIsAccepted(Boolean isAccepted) {
+	public void updateIsAccepted(Boolean isAccepted) {
 		this.isAccepted = isAccepted;
 	}
 
-	public void UpdateScheduleRule(ScheduleRule scheduleRule) {
+	public void updateScheduleRule(ScheduleRule scheduleRule) {
 		this.scheduleRule = scheduleRule;
 	}
 
-	public void UpdateMentorDetail(String nickname, String position, String introduction, String openTalkLink, List<Keyword> keywords) {
+	public void updateMentorDetail(String nickname, String position, String introduction, String openTalkLink, List<Keyword> keywords) {
 		this.nickname = nickname;
 		this.position = position;
 		this.introduction = introduction;

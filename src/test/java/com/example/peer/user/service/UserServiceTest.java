@@ -73,7 +73,7 @@ public class UserServiceTest {
         );
 
         //when
-        userService.CreateMentorDetail(mentorDetailRequest, mentor.getId());
+        userService.createMentorDetail(mentorDetailRequest, mentor.getId());
 
         //then
         Assertions.assertEquals(mentor.getPhoneNumber(), "01011111111");
@@ -101,8 +101,8 @@ public class UserServiceTest {
         );
 
         //when
-        userService.CreateMentorDetail(mentorDetailRequest, mentor.getId());
-        MentorDetailResponse mentorDetailResponse = userService.ViewMentorDetail(mentor.getId());
+        userService.createMentorDetail(mentorDetailRequest, mentor.getId());
+        MentorDetailResponse mentorDetailResponse = userService.viewMentorDetail(mentor.getId());
 
         //then
         Assertions.assertEquals(mentorDetailResponse.getMentorId(), mentor.getId());
@@ -128,7 +128,7 @@ public class UserServiceTest {
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );
 
-        userService.CreateMentorDetail(mentorDetailRequest, mentor.getId());
+        userService.createMentorDetail(mentorDetailRequest, mentor.getId());
 
         List<Keyword> updateKeywords = Arrays.asList(Keyword.FRONTEND);
         MentorDetailRequest updateRequest = MentorDetailRequest.builder()
@@ -141,7 +141,7 @@ public class UserServiceTest {
                 .build();
 
         //when
-        userService.UpdateMentorDetail(updateRequest, mentor.getId());
+        userService.updateMentorDetail(updateRequest, mentor.getId());
 
         //then
         Assertions.assertEquals(mentor.getPhoneNumber(), "01022222222");
@@ -158,7 +158,7 @@ public class UserServiceTest {
         );
 
         //when
-        MenteeDetailResponse menteeDetailResponse = userService.ViewMenteeDetail(mentee.getId());
+        MenteeDetailResponse menteeDetailResponse = userService.viewMenteeDetail(mentee.getId());
 
         //then
         Assertions.assertEquals(menteeDetailResponse.getMenteeId(), mentee.getId());
@@ -183,7 +183,7 @@ public class UserServiceTest {
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );
 
-        userService.CreateMentorDetail(mentorDetailRequest, mentor.getId());
+        userService.createMentorDetail(mentorDetailRequest, mentor.getId());
 
         User mentor2 = User.builder()
                 .name("peer_mentor2")
@@ -203,14 +203,14 @@ public class UserServiceTest {
                 .position("frontend")
                 .keywords(keywords)
                 .build();
-        userService.CreateMentorDetail(mentorDetailRequest2, mentor2.getId());
+        userService.createMentorDetail(mentorDetailRequest2, mentor2.getId());
 
         User mentee = userRepository.findByEmail("qwer1234@gmail.com").orElseThrow(
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );
 
         //when
-        MentorSummariesResponse mentorSummariesResponse = userService.ViewAcceptedMentorList(mentee.getId());
+        MentorSummariesResponse mentorSummariesResponse = userService.viewAcceptedMentorList(mentee.getId());
 
         //then
         Assertions.assertEquals(mentorSummariesResponse.getMentorSummaries().size(), 2);
@@ -234,10 +234,10 @@ public class UserServiceTest {
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );
 
-        userService.CreateMentorDetail(mentorDetailRequest, mentor.getId());
+        userService.createMentorDetail(mentorDetailRequest, mentor.getId());
 
         //when
-        MentorForMenteeResponse mentorForMenteeResponse = userService.ViewMentorByMentee(mentor.getId());
+        MentorForMenteeResponse mentorForMenteeResponse = userService.viewMentorByMentee(mentor.getId());
 
         //then
         Assertions.assertEquals(mentorForMenteeResponse.getMentorId(), mentor.getId());

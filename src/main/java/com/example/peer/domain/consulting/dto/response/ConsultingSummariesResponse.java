@@ -16,7 +16,7 @@ public class ConsultingSummariesResponse {
         this.consultingSummaries = new ArrayList<>();
     }
 
-    public void UpdateConsultingSummary(ConsultingSummary consultingSummary) {
+    public void updateConsultingSummary(ConsultingSummary consultingSummary) {
         this.consultingSummaries.add(consultingSummary);
     }
 }

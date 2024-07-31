@@ -75,7 +75,7 @@ public class ConsultingServiceTest {
                 .openTalkLink("kakaoLink")
                 .build();
         mentorDetailRepository.save(mentorDetail);
-        mentor.UpdateMentorDetail(mentorDetail);
+        mentor.updateMentorDetail(mentorDetail);
 
         List<LocalTime> scheduleRule = new ArrayList<>(24);
         for (int i=17;i<23;i++) {
@@ -91,7 +91,7 @@ public class ConsultingServiceTest {
                 .sundayScheduleRule(scheduleRule)
                 .build();
 
-        scheduleService.CreateScheduleRule(scheduleRuleRequest, mentor.getId());
+        scheduleService.createScheduleRule(scheduleRuleRequest, mentor.getId());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class ConsultingServiceTest {
                 .build();
 
         //when
-        ConsultingDetailResponse consultingDetailResponse = consultingService.CreateConsulting(consultingRequest, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse = consultingService.createConsulting(consultingRequest, mentee.getId());
 
         //then
         Consulting consulting = consultingRepository.findById(consultingDetailResponse.getId()).orElseThrow(
@@ -158,7 +158,7 @@ public class ConsultingServiceTest {
 
         //when, then
         Assertions.assertThrows(ConsultingException.class, () ->
-                consultingService.CreateConsulting(consultingRequest, mentee.getId()));
+                consultingService.createConsulting(consultingRequest, mentee.getId()));
     }
 
     @Test
@@ -184,10 +184,10 @@ public class ConsultingServiceTest {
                 .phoneNumber("01000000000")
                 .build();
 
-        ConsultingDetailResponse consultingDetailResponse = consultingService.CreateConsulting(consultingRequest, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse = consultingService.createConsulting(consultingRequest, mentee.getId());
 
         //when
-        consultingService.AcceptConsulting(consultingDetailResponse.getId(), mentor.getId());
+        consultingService.acceptConsulting(consultingDetailResponse.getId(), mentor.getId());
 
         //then
         Consulting consulting = consultingRepository.findById(consultingDetailResponse.getId()).orElseThrow(
@@ -232,15 +232,15 @@ public class ConsultingServiceTest {
                 .phoneNumber("01011111111")
                 .build();
 
-        ConsultingDetailResponse consultingDetailResponse1 = consultingService.CreateConsulting(consultingRequest1, mentee.getId());
-        ConsultingDetailResponse consultingDetailResponse2 = consultingService.CreateConsulting(consultingRequest2, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse1 = consultingService.createConsulting(consultingRequest1, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse2 = consultingService.createConsulting(consultingRequest2, mentee.getId());
 
         //when
-        consultingService.AcceptConsulting(consultingDetailResponse1.getId(), mentor.getId());
+        consultingService.acceptConsulting(consultingDetailResponse1.getId(), mentor.getId());
 
         //then
         Assertions.assertThrows(ConsultingException.class, () ->
-                consultingService.AcceptConsulting(consultingDetailResponse2.getId(), mentor.getId()));
+                consultingService.acceptConsulting(consultingDetailResponse2.getId(), mentor.getId()));
     }
 
     @Test
@@ -266,10 +266,10 @@ public class ConsultingServiceTest {
                 .phoneNumber("01000000000")
                 .build();
 
-        ConsultingDetailResponse consultingDetailResponse = consultingService.CreateConsulting(consultingRequest, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse = consultingService.createConsulting(consultingRequest, mentee.getId());
 
         //when
-        consultingService.RejectConsulting(consultingDetailResponse.getId(), mentor.getId());
+        consultingService.rejectConsulting(consultingDetailResponse.getId(), mentor.getId());
 
         //then
         Consulting consulting = consultingRepository.findById(consultingDetailResponse.getId()).orElseThrow(
@@ -302,12 +302,12 @@ public class ConsultingServiceTest {
                 .phoneNumber("01000000000")
                 .build();
 
-        ConsultingDetailResponse consultingDetailResponse = consultingService.CreateConsulting(consultingRequest, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse = consultingService.createConsulting(consultingRequest, mentee.getId());
 
-        consultingService.AcceptConsulting(consultingDetailResponse.getId(), mentor.getId());
+        consultingService.acceptConsulting(consultingDetailResponse.getId(), mentor.getId());
 
         //when
-        ConsultingDetailResponse consultingDetail = consultingService.ViewConsultingDetailMentor(consultingDetailResponse.getId(), mentor.getId());
+        ConsultingDetailResponse consultingDetail = consultingService.viewConsultingDetailMentor(consultingDetailResponse.getId(), mentor.getId());
 
         //then
         Assertions.assertEquals(consultingDetail.getConsultingDateTime(), consultingDateTime);
@@ -341,12 +341,12 @@ public class ConsultingServiceTest {
                 .phoneNumber("01000000000")
                 .build();
 
-        ConsultingDetailResponse consultingDetailResponse = consultingService.CreateConsulting(consultingRequest, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse = consultingService.createConsulting(consultingRequest, mentee.getId());
 
-        consultingService.AcceptConsulting(consultingDetailResponse.getId(), mentor.getId());
+        consultingService.acceptConsulting(consultingDetailResponse.getId(), mentor.getId());
 
         //when
-        ConsultingDetailResponse consultingDetail = consultingService.ViewConsultingDetailMentee(consultingDetailResponse.getId(), mentee.getId());
+        ConsultingDetailResponse consultingDetail = consultingService.viewConsultingDetailMentee(consultingDetailResponse.getId(), mentee.getId());
 
         //then
         Assertions.assertEquals(consultingDetail.getConsultingDateTime(), consultingDateTime);
@@ -396,14 +396,14 @@ public class ConsultingServiceTest {
 
 
 
-        ConsultingDetailResponse consultingDetailResponse1 = consultingService.CreateConsulting(consultingRequest1, mentee.getId());
-        ConsultingDetailResponse consultingDetailResponse2 = consultingService.CreateConsulting(consultingRequest2, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse1 = consultingService.createConsulting(consultingRequest1, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse2 = consultingService.createConsulting(consultingRequest2, mentee.getId());
 
-        consultingService.AcceptConsulting(consultingDetailResponse1.getId(), mentor.getId());
-        consultingService.AcceptConsulting(consultingDetailResponse2.getId(), mentor.getId());
+        consultingService.acceptConsulting(consultingDetailResponse1.getId(), mentor.getId());
+        consultingService.acceptConsulting(consultingDetailResponse2.getId(), mentor.getId());
 
         //when
-        ConsultingSummariesResponse consultingSummariesResponse = consultingService.ViewPresentConsultingMentor(mentor.getId(), State.ACCEPTED);
+        ConsultingSummariesResponse consultingSummariesResponse = consultingService.viewPresentConsultingMentor(mentor.getId(), State.ACCEPTED);
 
         //then
         Assertions.assertEquals(consultingSummariesResponse.getConsultingSummaries().size(), 2);
@@ -456,14 +456,14 @@ public class ConsultingServiceTest {
 
 
 
-        ConsultingDetailResponse consultingDetailResponse1 = consultingService.CreateConsulting(consultingRequest1, mentee.getId());
-        ConsultingDetailResponse consultingDetailResponse2 = consultingService.CreateConsulting(consultingRequest2, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse1 = consultingService.createConsulting(consultingRequest1, mentee.getId());
+        ConsultingDetailResponse consultingDetailResponse2 = consultingService.createConsulting(consultingRequest2, mentee.getId());
 
-        consultingService.AcceptConsulting(consultingDetailResponse1.getId(), mentor.getId());
-        consultingService.AcceptConsulting(consultingDetailResponse2.getId(), mentor.getId());
+        consultingService.acceptConsulting(consultingDetailResponse1.getId(), mentor.getId());
+        consultingService.acceptConsulting(consultingDetailResponse2.getId(), mentor.getId());
 
         //when
-        ConsultingSummariesResponse consultingSummariesResponse = consultingService.ViewPresentConsultingMentee(mentee.getId(), State.ACCEPTED);
+        ConsultingSummariesResponse consultingSummariesResponse = consultingService.viewPresentConsultingMentee(mentee.getId(), State.ACCEPTED);
 
         //then
         Assertions.assertEquals(consultingSummariesResponse.getConsultingSummaries().size(), 2);
